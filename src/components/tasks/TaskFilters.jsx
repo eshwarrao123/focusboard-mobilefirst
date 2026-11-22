@@ -1,6 +1,34 @@
 import React from 'react';
 import { Search, ChevronDown, X } from 'lucide-react';
 
+function SearchInput({ className = '', placeholder, value, onChange }) {
+  return (
+    <div className={`search-input-wrapper ${className}`.trim()}>
+      <span className="search-icon" aria-hidden="true">
+        <Search size={16} strokeWidth={2} />
+      </span>
+      <input
+        type="text"
+        className="search-input"
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        aria-label="Search tasks by title"
+      />
+      {value && (
+        <button
+          type="button"
+          className="search-clear-btn"
+          onClick={() => onChange('')}
+          aria-label="Clear search"
+        >
+          <X size={14} />
+        </button>
+      )}
+    </div>
+  );
+}
+
 export default function TaskFilters({
   statusFilter,
   onStatusChange,
@@ -18,30 +46,13 @@ export default function TaskFilters({
 
   return (
     <div className="task-filters-bar">
-      {/* Search Input (On Mobile: Top Full-Width row; On Desktop: Right controls group) */}
-      <div className="search-input-wrapper mobile-only">
-        <span className="search-icon" aria-hidden="true">
-          <Search size={16} strokeWidth={2} />
-        </span>
-        <input
-          type="text"
-          className="search-input"
-          placeholder="Search tasks..."
-          value={searchQuery}
-          onChange={(e) => onSearchChange(e.target.value)}
-          aria-label="Search tasks by title"
-        />
-        {searchQuery && (
-          <button
-            type="button"
-            className="search-clear-btn"
-            onClick={() => onSearchChange('')}
-            aria-label="Clear search"
-          >
-            <X size={14} />
-          </button>
-        )}
-      </div>
+      {/* Mobile Search: Full-width top row */}
+      <SearchInput
+        className="mobile-only"
+        placeholder="Search tasks..."
+        value={searchQuery}
+        onChange={onSearchChange}
+      />
 
       {/* Status Segmented Tabs */}
       <div className="status-tabs" role="tablist" aria-label="Task Status Filters">
@@ -65,29 +76,12 @@ export default function TaskFilters({
 
       {/* Desktop Search and Priority Dropdown */}
       <div className="filter-controls-group">
-        <div className="search-input-wrapper desktop-only">
-          <span className="search-icon" aria-hidden="true">
-            <Search size={16} strokeWidth={2} />
-          </span>
-          <input
-            type="text"
-            className="search-input"
-            placeholder="Find a task..."
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-            aria-label="Search tasks by title"
-          />
-          {searchQuery && (
-            <button
-              type="button"
-              className="search-clear-btn"
-              onClick={() => onSearchChange('')}
-              aria-label="Clear search"
-            >
-              <X size={14} />
-            </button>
-          )}
-        </div>
+        <SearchInput
+          className="desktop-only"
+          placeholder="Find a task..."
+          value={searchQuery}
+          onChange={onSearchChange}
+        />
 
         <div className="priority-select-wrapper">
           <select

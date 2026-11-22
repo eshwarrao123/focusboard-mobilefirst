@@ -53,21 +53,24 @@ button.desktop-only {
 .sidebar-logo {
   display: flex;
   align-items: center;
-  gap: 12px;
   padding: 0 8px 28px 8px;
 }
 
-.logo-icon-box {
-  width: 38px;
-  height: 38px;
-  background-color: var(--color-primary);
-  border-radius: 10px;
-  display: flex;
+/* Canonical Brand Logo */
+.brand-logo {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  box-shadow: 0 2px 4px rgba(88, 80, 236, 0.25);
+  gap: 12px;
+  user-select: none;
+}
+
+.brand-logo-icon {
+  display: block;
   flex-shrink: 0;
+}
+
+.brand-logo-sm {
+  gap: 10px;
 }
 
 .logo-text {
@@ -76,6 +79,7 @@ button.desktop-only {
   color: var(--color-text-primary);
   letter-spacing: -0.02em;
   white-space: nowrap;
+  line-height: 1;
 }
 
 .sidebar-section-title {
@@ -168,32 +172,6 @@ button.desktop-only {
 .breadcrumb-current {
   color: var(--color-text-primary);
   font-weight: var(--font-weight-semibold);
-}
-
-/* Header Mobile Brand */
-.mobile-header-brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.mobile-logo-icon {
-  width: 34px;
-  height: 34px;
-  background-color: var(--color-primary);
-  border-radius: 9px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  box-shadow: 0 2px 4px rgba(88, 80, 236, 0.25);
-}
-
-.mobile-brand-name {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-primary);
-  letter-spacing: -0.02em;
 }
 
 /* User Avatar */

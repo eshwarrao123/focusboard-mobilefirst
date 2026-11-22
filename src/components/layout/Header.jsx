@@ -1,5 +1,6 @@
 import React from 'react';
-import { LayoutGrid, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
+import BrandLogo from '../common/BrandLogo';
 
 export default function Header({ userInitials = 'JD' }) {
   return (
@@ -12,11 +13,8 @@ export default function Header({ userInitials = 'JD' }) {
       </nav>
 
       {/* Mobile Brand Logo */}
-      <div className="mobile-header-brand mobile-only" aria-label="FocusBoard Home">
-        <div className="mobile-logo-icon" aria-hidden="true">
-          <LayoutGrid size={18} strokeWidth={2.5} />
-        </div>
-        <span className="mobile-brand-name">FocusBoard</span>
+      <div className="mobile-only">
+        <BrandLogo size="sm" showWordmark={true} />
       </div>
 
       {/* User Profile Avatar */}

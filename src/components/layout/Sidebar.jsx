@@ -1,5 +1,6 @@
 import React from 'react';
 import { LayoutGrid, List, Calendar, Settings } from 'lucide-react';
+import BrandLogo from '../common/BrandLogo';
 
 export default function Sidebar({ activeNav = 'overview', onNavClick }) {
   const navItems = [
@@ -12,10 +13,7 @@ export default function Sidebar({ activeNav = 'overview', onNavClick }) {
   return (
     <aside className="sidebar" aria-label="Main Navigation">
       <div className="sidebar-logo">
-        <div className="logo-icon-box" aria-hidden="true">
-          <LayoutGrid size={20} strokeWidth={2.5} />
-        </div>
-        <span className="logo-text">FocusBoard</span>
+        <BrandLogo size="md" showWordmark={true} />
       </div>
 
       <div className="sidebar-section-title">WORKSPACE</div>
