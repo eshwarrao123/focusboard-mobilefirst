@@ -76,3 +76,20 @@ This document records the use of Artificial Intelligence assistance in the devel
   - Implemented `dateUtils.js` for formatting and bidirectional conversion between ISO date picker values (`YYYY-MM-DD`) and clean Figma display strings (`Nov 22`).
   - Executed end-to-end automated verification suite via Chrome DevTools Protocol validating creation, edit, deletion cancellation, confirmed deletion, checkbox status toggle, page reload persistence, and empty-list persistence (`[]`).
   - Captured rendered modal screenshots across all viewports (`rendered_modal_desktop_1440x1000.png`, `rendered_modal_tablet_768x1024.png`, `rendered_modal_mobile_390x1128.png`, and `rendered_delete_dialog.png`).
+
+
+---
+
+## Phase 4.1 — Form Modal & Delete Dialog Visual Audit & Refinement
+- **Tool / Assistant:** Gemini 3.8 Flash (High) via Google Antigravity
+- **Date:** November 23, 2026
+- **Scope:**
+  - Audited actual Figma modal bounds in Frame `1:279` (outer frame 760 × 822 px), identifying exact modal card dimensions (597 × 714 px) and adjusted `.modal-container` to `max-width: 600px`.
+  - Investigated and resolved the duplicate calendar icons issue on the Due Date input: pruned the redundant custom Lucide icon and wrapper while preserving the native, interactive browser date-picker indicator (`::-webkit-calendar-picker-indicator`).
+  - Audited delete confirmation dialog: verified `role="alertdialog"`, `aria-modal="true"`, initial focus on "Cancel" button to safeguard against accidental deletion, full focus restoration upon closing, and title wrapping (`word-break: break-word`).
+  - Executed automated visual and functional regression suite verifying modal cancel, validation, creation, editing, deletion cancellation, deletion confirmation, statistics updates, and refresh persistence.
+  - Re-captured high-resolution screenshots:
+    - `rendered_modal_desktop_1440x1000.png`
+    - `rendered_modal_mobile_390x1128.png`
+    - `rendered_delete_dialog_desktop.png`
+    - `rendered_delete_dialog_mobile.png`

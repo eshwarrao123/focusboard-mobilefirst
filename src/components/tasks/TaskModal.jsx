@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Calendar } from 'lucide-react';
+import { X } from 'lucide-react';
 import { formatInputDate } from '../../utils/dateUtils';
 
 export default function TaskModal({
@@ -20,10 +20,13 @@ export default function TaskModal({
 
   const titleInputRef = useRef(null);
   const modalCardRef = useRef(null);
+  const prevFocusedEl = useRef(null);
 
   // Sync form state when modal opens or initialTask changes
   useEffect(() => {
     if (isOpen) {
+      prevFocusedEl.current = document.activeElement;
+
       if (isEdit && initialTask) {
         setTitle(initialTask.title || '');
         setDescription(initialTask.description || '');
@@ -51,6 +54,7 @@ export default function TaskModal({
 
       return () => {
         document.body.style.overflow = originalOverflow;
+        prevFocusedEl.current?.focus?.();
       };
     }
   }, [isOpen, isEdit, initialTask]);
@@ -251,23 +255,18 @@ export default function TaskModal({
             <label htmlFor="task-due-date" className="form-label">
               Due date <span className="label-required">*</span>
             </label>
-            <div className="input-with-icon-wrapper">
-              <input
-                id="task-due-date"
-                type="date"
-                className={`form-input date-input ${errors.dueDate ? 'is-invalid' : ''}`}
-                value={dueDate}
-                onChange={(e) => {
-                  setDueDate(e.target.value);
-                  if (errors.dueDate) setErrors((prev) => ({ ...prev, dueDate: undefined }));
-                }}
-                aria-invalid={errors.dueDate ? 'true' : 'false'}
-                aria-describedby={errors.dueDate ? 'due-date-error' : undefined}
-              />
-              <span className="input-icon-right" aria-hidden="true">
-                <Calendar size={16} />
-              </span>
-            </div>
+            <input
+              id="task-due-date"
+              type="date"
+              className={`form-input date-input ${errors.dueDate ? 'is-invalid' : ''}`}
+              value={dueDate}
+              onChange={(e) => {
+                setDueDate(e.target.value);
+                if (errors.dueDate) setErrors((prev) => ({ ...prev, dueDate: undefined }));
+              }}
+              aria-invalid={errors.dueDate ? 'true' : 'false'}
+              aria-describedby={errors.dueDate ? 'due-date-error' : undefined}
+            />
             {errors.dueDate && (
               <span id="due-date-error" className="form-error-text" role="alert">
                 {errors.dueDate}

@@ -9,9 +9,11 @@ export default function ConfirmDeleteDialog({
 }) {
   const dialogRef = useRef(null);
   const cancelBtnRef = useRef(null);
+  const prevFocusedEl = useRef(null);
 
   useEffect(() => {
     if (isOpen) {
+      prevFocusedEl.current = document.activeElement;
       const originalOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
 
@@ -29,6 +31,7 @@ export default function ConfirmDeleteDialog({
       return () => {
         document.body.style.overflow = originalOverflow;
         window.removeEventListener('keydown', handleKeyDown);
+        prevFocusedEl.current?.focus?.();
       };
     }
   }, [isOpen, onClose]);
