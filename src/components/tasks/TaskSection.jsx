@@ -15,7 +15,9 @@ export default function TaskSection({
   onToggleComplete,
   onResetFilters,
   onViewAllTasks,
-  onNewTask
+  onNewTask,
+  onEdit,
+  onDelete,
 }) {
   return (
     <section className="my-tasks-section" aria-label="My tasks">
@@ -64,6 +66,8 @@ export default function TaskSection({
         tasks={tasks}
         onToggleComplete={onToggleComplete}
         onResetFilters={onResetFilters}
+        onEdit={onEdit}
+        onDelete={onDelete}
       />
     </section>
   );

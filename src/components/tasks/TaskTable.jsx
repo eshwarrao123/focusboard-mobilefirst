@@ -2,7 +2,13 @@ import React from 'react';
 import TaskRow from './TaskRow';
 import { Search } from 'lucide-react';
 
-export default function TaskTable({ tasks = [], onToggleComplete, onResetFilters }) {
+export default function TaskTable({
+  tasks = [],
+  onToggleComplete,
+  onResetFilters,
+  onEdit,
+  onDelete,
+}) {
   if (tasks.length === 0) {
     return (
       <div className="task-table-empty">
@@ -33,7 +39,9 @@ export default function TaskTable({ tasks = [], onToggleComplete, onResetFilters
           <TaskRow 
             key={task.id} 
             task={task} 
-            onToggleComplete={onToggleComplete} 
+            onToggleComplete={onToggleComplete}
+            onEdit={onEdit}
+            onDelete={onDelete}
           />
         ))}
       </div>

@@ -4,29 +4,73 @@ import DashboardHeading from './components/dashboard/DashboardHeading';
 import FocusNotesCarousel from './components/carousel/FocusNotesCarousel';
 import StatsGrid from './components/dashboard/StatsGrid';
 import TaskSection from './components/tasks/TaskSection';
-import { initialSampleTasks } from './data/sampleTasks';
+import TaskModal from './components/tasks/TaskModal';
+import ConfirmDeleteDialog from './components/tasks/ConfirmDeleteDialog';
+import { useTasks } from './hooks/useTasks';
 
 export default function App() {
-  const [tasks, setTasks] = useState(initialSampleTasks);
+  const { tasks, addTask, updateTask, deleteTask, toggleTaskStatus } = useTasks();
+
   const [activeNav, setActiveNav] = useState('overview');
   const [statusFilter, setStatusFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [priorityFilter, setPriorityFilter] = useState('all');
 
-  // Toggle task completion strictly via canonical status field
-  const handleToggleComplete = (taskId) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) => {
-        if (task.id === taskId) {
-          const isCurrentlyCompleted = task.status === 'completed';
-          return {
-            ...task,
-            status: isCurrentlyCompleted ? 'todo' : 'completed',
-          };
-        }
-        return task;
-      })
-    );
+  // Modal State for Create & Edit
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState('create'); // 'create' | 'edit'
+  const [taskToEdit, setTaskToEdit] = useState(null);
+
+  // Delete Confirmation Dialog State
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState(null);
+
+  // Open Create Modal
+  const handleOpenCreateModal = () => {
+    setModalMode('create');
+    setTaskToEdit(null);
+    setIsModalOpen(true);
+  };
+
+  // Open Edit Modal
+  const handleOpenEditModal = (task) => {
+    setModalMode('edit');
+    setTaskToEdit(task);
+    setIsModalOpen(true);
+  };
+
+  // Close Modal
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setTaskToEdit(null);
+  };
+
+  // Handle Create or Edit submission
+  const handleModalSubmit = (taskData) => {
+    if (modalMode === 'edit' && taskToEdit) {
+      updateTask(taskToEdit.id, taskData);
+    } else {
+      addTask(taskData);
+    }
+    handleCloseModal();
+  };
+
+  // Open Delete Confirmation
+  const handleOpenDelete = (task) => {
+    setTaskToDelete(task);
+    setIsDeleteDialogOpen(true);
+  };
+
+  // Close Delete Confirmation
+  const handleCloseDelete = () => {
+    setIsDeleteDialogOpen(false);
+    setTaskToDelete(null);
+  };
+
+  // Confirm Delete
+  const handleConfirmDelete = (taskId) => {
+    deleteTask(taskId);
+    handleCloseDelete();
   };
 
   // Reset all filters
@@ -70,7 +114,7 @@ export default function App() {
   return (
     <AppLayout activeNav={activeNav} onNavClick={setActiveNav}>
       {/* 1. Dashboard Heading Row */}
-      <DashboardHeading onNewTask={() => console.log('New task triggered')} />
+      <DashboardHeading onNewTask={handleOpenCreateModal} />
 
       {/* 2. Focus Notes 3-Slide Carousel */}
       <FocusNotesCarousel />
@@ -88,10 +132,29 @@ export default function App() {
         onSearchChange={setSearchQuery}
         priorityFilter={priorityFilter}
         onPriorityChange={setPriorityFilter}
-        onToggleComplete={handleToggleComplete}
+        onToggleComplete={toggleTaskStatus}
         onResetFilters={handleResetFilters}
         onViewAllTasks={() => setStatusFilter('all')}
-        onNewTask={() => console.log('Mobile add task triggered')}
+        onNewTask={handleOpenCreateModal}
+        onEdit={handleOpenEditModal}
+        onDelete={handleOpenDelete}
+      />
+
+      {/* 5. Reusable Task Create / Edit Modal (Figma Frame 1:279) */}
+      <TaskModal
+        isOpen={isModalOpen}
+        mode={modalMode}
+        initialTask={taskToEdit}
+        onClose={handleCloseModal}
+        onSubmit={handleModalSubmit}
+      />
+
+      {/* 6. Accessible Delete Confirmation Dialog */}
+      <ConfirmDeleteDialog
+        isOpen={isDeleteDialogOpen}
+        task={taskToDelete}
+        onClose={handleCloseDelete}
+        onConfirm={handleConfirmDelete}
       />
     </AppLayout>
   );

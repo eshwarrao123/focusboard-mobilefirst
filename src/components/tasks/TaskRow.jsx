@@ -1,9 +1,31 @@
-import React from 'react';
-import { Check, Calendar, MoreHorizontal } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Check, Calendar, MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 
-export default function TaskRow({ task, onToggleComplete }) {
-  // Canonical status check
+export default function TaskRow({ task, onToggleComplete, onEdit, onDelete }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const rowRef = useRef(null);
   const isCompleted = task.status === 'completed';
+
+  // Close popup menu when clicking outside this task row or pressing Escape
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const handleClickOutside = (e) => {
+      if (rowRef.current && !rowRef.current.contains(e.target)) {
+        setIsMenuOpen(false);
+      }
+    };
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleEscape);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isMenuOpen]);
 
   const getCategoryClass = (category) => {
     switch (category?.toLowerCase()) {
@@ -34,8 +56,39 @@ export default function TaskRow({ task, onToggleComplete }) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
+  const renderActionMenu = () => (
+    <div className="task-action-menu" role="menu">
+      <button
+        type="button"
+        className="task-menu-item"
+        role="menuitem"
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsMenuOpen(false);
+          if (onEdit) onEdit(task);
+        }}
+      >
+        <Pencil size={14} className="menu-item-icon" />
+        <span>Edit</span>
+      </button>
+      <button
+        type="button"
+        className="task-menu-item item-danger"
+        role="menuitem"
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsMenuOpen(false);
+          if (onDelete) onDelete(task);
+        }}
+      >
+        <Trash2 size={14} className="menu-item-icon" />
+        <span>Delete</span>
+      </button>
+    </div>
+  );
+
   return (
-    <div className={`task-row ${isCompleted ? 'is-completed' : ''}`}>
+    <div className={`task-row ${isCompleted ? 'is-completed' : ''}`} ref={rowRef}>
       {/* Main Top / Left Section (Checkbox, Title, Subtitle, and Mobile Action menu) */}
       <div className="task-row-main">
         <button
@@ -60,9 +113,16 @@ export default function TaskRow({ task, onToggleComplete }) {
             type="button"
             className="btn-task-menu"
             aria-label={`Actions for ${task.title}`}
+            aria-haspopup="true"
+            aria-expanded={isMenuOpen}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsMenuOpen((prev) => !prev);
+            }}
           >
             <MoreHorizontal size={18} strokeWidth={2} />
           </button>
+          {isMenuOpen && renderActionMenu()}
         </div>
       </div>
 
@@ -91,9 +151,16 @@ export default function TaskRow({ task, onToggleComplete }) {
             type="button"
             className="btn-task-menu"
             aria-label={`Actions for ${task.title}`}
+            aria-haspopup="true"
+            aria-expanded={isMenuOpen}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsMenuOpen((prev) => !prev);
+            }}
           >
             <MoreHorizontal size={18} strokeWidth={2} />
           </button>
+          {isMenuOpen && renderActionMenu()}
         </div>
       </div>
     </div>
