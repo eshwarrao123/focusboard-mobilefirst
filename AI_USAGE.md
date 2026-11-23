@@ -1,95 +1,84 @@
 # AI Usage Disclosure — FocusBoard
 
-This document records the use of Artificial Intelligence assistance in the development of the **FocusBoard** project, in compliance with academic and professional integrity standards.
+This document records the transparent and ethical use of Artificial Intelligence assistance in the development of the **FocusBoard** project, adhering to professional and academic integrity standards.
 
 ---
 
-## Phase 1 — Project Foundation & Figma Audit
-- **Tool / Assistant:** Gemini 3.8 Flash (High) via Google Antigravity
-- **Date:** November 22, 2026
-- **Scope:**
-  - Analyzed official Figma reference frames (`1:2`, `1:167`, `1:279`, `15:2`, `15:30`, `15:58`).
-  - Scaffolding of React + Vite foundation.
-  - Repository environment audit and initial documentation.
+## 1. AI Tools & Models Used
+
+1. **Google Antigravity AI Assistant**
+   - **Model:** Gemini 3.8 Flash (High)
+   - **Environment:** Google Antigravity Agentic Desktop IDE
+   - **Role:** Primary development assistant for codebase scaffolding, Figma token extraction, component implementation, responsive styling, Playwright testing, and documentation.
+2. **OpenAI ChatGPT (GPT-4o)**
+   - **Role:** Secondary reference consultation during initial requirement analysis and prompt clarification.
 
 ---
 
-## Phase 2 — Desktop Dashboard Visual Implementation
-- **Tool / Assistant:** Gemini 3.8 Flash (High) via Google Antigravity
-- **Date:** November 22, 2026
-- **Scope:**
-  - Conducted pixel-level color sampling of `desktop.png` and `mobile.png` using .NET bitmap analysis in PowerShell to resolve Phase 1 audit inconsistencies for Medium (`#0D9488` / `#E6FFFA`) vs Low (`#059669` / `#ECFDF5`) priority badge tokens.
-  - Implemented application shell: `AppLayout`, `Sidebar`, `Header`.
-  - Built `FocusNotesCarousel` and `FocusNotesSlide` with all 3 Figma slides, interactive indicator dashes, and cyclical `<` and `>` controls.
-  - Built `StatsGrid` and `StatCard` dynamically computing metrics.
-  - Built `TaskSection`, `TaskFilters`, `TaskTable`, and `TaskRow`.
-  - Captured full 1440 × 1000 px headless Chrome browser screenshot for visual comparison against Figma Frame `1:2`.
+## 2. AI-Assisted Development Areas
+
+- **Project Scaffolding & Setup:** Vite + React 18 configuration, folder organization, script setup.
+- **Figma Design Analysis:** Automated high-resolution frame inspection (`1:2`, `1:167`, `1:279`, `15:2`, `15:30`, `15:58`), color token extraction via .NET bitmap pixel sampling.
+- **Responsive Component Architecture:** Desktop sidebar, tablet compact navigation, mobile fixed bottom bar, 3-slide Focus Notes carousel.
+- **Task Management CRUD & State:** Canonical `useTasks` hook, compound filtering, accessible modal dialogs, and `localStorage` synchronization.
+- **Quality Assurance & Verification:** Headless Chrome CDP screenshot captures and Playwright end-to-end automated test suites.
+- **Documentation:** Architectural specifications (`FIGMA_AUDIT.md`, `IMPLEMENTATION_PLAN.md`, `README.md`).
 
 ---
 
-## Phase 3 — Mobile-First Responsive Implementation
-- **Tool / Assistant:** Gemini 3.8 Flash (High) via Google Antigravity
-- **Date:** November 22, 2026
-- **Scope:**
-  - Refactored task data model to strictly use one canonical `status` field (`'todo' | 'in_progress' | 'completed'`), removing competing boolean flags.
-  - Corrected task toggle behavior: checking sets status to `completed`, unchecking sets status to `todo`.
-  - Refactored task search to be strictly title-based and case-insensitive.
-  - Built `BottomNav` fixed navigation bar for mobile (`< 768px`) with active indicators and safe-area insets.
-  - Transformed desktop task table into mobile stacked card pattern matching Figma Frame `1:167`.
-  - Adapted mobile statistics grid to 2 columns (visually omitting In progress while maintaining calculated state).
-  - Built compact mobile Focus Notes banner with inline progress bar and accessible controls.
-  - Implemented compact 72px icon sidebar and reflowed toolbars for tablet width (768px - 1023px).
-  - Verified layout across all 3 viewports via Chrome DevTools Protocol device metrics overrides, capturing:
-    - `rendered_mobile_390x1128.png`
-    - `rendered_tablet_768x1024.png`
-    - `rendered_desktop_regression_1440x1000.png`
-  - Verified 100% desktop regression-free parity.
+## 3. Representative Prompts Used
 
+### Prompt 1: Initial Figma Audit & Foundation Scaffolding
+> *"Inspect the six target Figma frames (Desktop 1:2, Mobile 1:167, Create-task 1:279, and Focus Notes slides 15:2, 15:30, 15:58). Extract exact dimensions, typography tokens, status colors, and responsive layout decisions into a technical audit document before writing code."*
+
+### Prompt 2: Resolving Token Discrepancies via Pixel Sampling
+> *"The Phase 1 audit shows potential color collisions between Medium and Low priority badges. Write a PowerShell .NET bitmap pixel-sampling script to measure the exact hexadecimal values from `desktop.png` and update `variables.css` with authoritative tokens."*
+
+### Prompt 3: Canonical Status Model & Mobile-First Adaptation
+> *"Refactor the task data model to strictly use one canonical `status` field ('todo' | 'in_progress' | 'completed'). Ensure checking a task sets status to 'completed' and unchecking sets status to 'todo'. Adapt the layout for 390 × 1128 mobile with fixed bottom navigation and stacked cards."*
+
+### Prompt 4: Brand Logo Fidelity & Ponytail Refinement
+> *"Inspect the brand logo in Figma versus localhost. The current implementation uses a hollow Lucide grid icon, whereas Figma uses a solid 2×2 square emblem with white and light lavender accents on a purple squircle. Build a reusable `BrandLogo` component matching the exact vector geometry, eliminate the artificial drop shadow, and remove duplicate markup."*
+
+### Prompt 5: End-to-End Playwright QA Suite
+> *"Install Playwright using the local Google Chrome binary channel. Create a maintainable test suite covering dashboard loading, task creation validation, editing in-place, delete confirmation safety, compound filters, reload persistence, and responsive viewport integrity."*
 
 ---
 
-## Phase 3.1 — Logo Fidelity & Ponytail Code Quality Refinement
-- **Tool / Assistant:** Gemini 3.8 Flash (High) via Google Antigravity
-- **Date:** November 22-23, 2026
-- **Scope:**
-  - Pixel-accurate Figma logo extraction and recreation: Replaced generic Lucide `LayoutGrid` outlined icon with canonical `BrandLogo` component featuring the exact 2×2 grid of four solid rounded squares (Top-Left, Top-Right, Bottom-Left in `#FFFFFF`, Bottom-Right in light lavender `#B9B4FF` inside `#5850EC` squircle).
-  - Eliminated artificial drop shadow on the brand symbol to reflect Figma's clean flat aesthetic.
-  - Ponytail engineering-discipline audit:
-    - Unified brand logo presentation across Desktop, Tablet, and Mobile into a single reusable component (`BrandLogo.jsx`).
-    - Extracted reusable `SearchInput` component inside `TaskFilters.jsx`, eliminating 40+ lines of duplicated search markup.
-    - Pruned dead CSS rules (`.logo-icon-box`, `.mobile-header-brand`, `.mobile-logo-icon`, `.mobile-brand-name`).
-  - Successfully verified zero-error production build (`npm run build`).
-  - Recaptured and verified responsive rendering across Mobile (390×1128), Tablet (768×1024), and Desktop (1440×1000).
+## 4. Verified, Corrected or Rejected AI Suggestions
 
+Throughout the multi-phase implementation, all AI-generated code and suggestions were rigorously audited against the authoritative Figma references. Several suggestions were rejected or corrected:
 
----
+### Case 1: Correction of Priority Badge Tokens (Phase 2)
+- **Initial AI Output:** An early inspection suggested that Low and Medium priority tags might share a common green hue.
+- **Human/Agent Audit:** Pixel-level color sampling of the original Figma desktop capture revealed distinct color identities:
+  - **Medium Priority:** Teal text (`#0D9488`) on light cyan/teal background (`#E6FFFA`).
+  - **Low Priority:** Mint text (`#059669`) on light mint background (`#ECFDF5`).
+- **Correction Applied:** Token definitions in `variables.css` were updated to reflect the true Figma design values.
 
-## Phase 4 — Complete Task CRUD, Form Validation & LocalStorage Persistence
-- **Tool / Assistant:** Gemini 3.8 Flash (High) via Google Antigravity
-- **Date:** November 23, 2026
-- **Scope:**
-  - Designed and implemented canonical `useTasks` hook encapsulating all CRUD state operations (`addTask`, `updateTask`, `deleteTask`, `toggleTaskStatus`) with transparent browser `localStorage` synchronization under key `focusboard_tasks`.
-  - Built reusable `TaskModal` adhering strictly to Figma Frame `1:279` (760 × 822 px design) for both task creation and editing.
-  - Implemented field-specific validation: rejection of empty or spaces-only titles, valid due date enforcement, and canonical status/priority verification.
-  - Built accessible `ConfirmDeleteDialog` preventing accidental task removal, with keyboard navigation and focus restoration.
-  - Added interactive actions dropdown menu (`...`) to `TaskRow` supporting inline Edit and Delete workflows across desktop, tablet, and mobile cards.
-  - Implemented `dateUtils.js` for formatting and bidirectional conversion between ISO date picker values (`YYYY-MM-DD`) and clean Figma display strings (`Nov 22`).
-  - Executed end-to-end automated verification suite via Chrome DevTools Protocol validating creation, edit, deletion cancellation, confirmed deletion, checkbox status toggle, page reload persistence, and empty-list persistence (`[]`).
-  - Captured rendered modal screenshots across all viewports (`rendered_modal_desktop_1440x1000.png`, `rendered_modal_tablet_768x1024.png`, `rendered_modal_mobile_390x1128.png`, and `rendered_delete_dialog.png`).
+### Case 2: Replacing Generic Outlined Icon with Exact Brand Logo (Phase 3.1)
+- **Initial AI Output:** The initial scaffolding used Lucide's `LayoutGrid` outlined icon for both the brand emblem and the sidebar navigation.
+- **Human/Agent Audit:** Detailed inspection of the Figma header crop (`media_1795370194387_0d374a69.png`) revealed that the brand logo is a distinct solid vector emblem: four filled rounded squares where Top-Left, Top-Right, and Bottom-Left are solid white (`#FFFFFF`) and Bottom-Right is a translucent lavender/light purple (`#B9B4FF`), without any harsh drop shadow.
+- **Correction Applied:** Replaced the Lucide icon with a dedicated, zero-runtime inline SVG `BrandLogo` component, establishing exact visual parity.
 
+### Case 3: Resolving Duplicate Calendar Picker Icons (Phase 4.1)
+- **Initial AI Output:** The date input rendered both the browser's native `::-webkit-calendar-picker-indicator` and an overlaid Lucide `<Calendar />` icon.
+- **Human/Agent Audit:** Visual inspection of `rendered_modal_desktop_1440x1000.png` caught the double-icon glitch.
+- **Correction Applied:** Pruned the redundant Lucide icon and wrapper div, applying CSS styling directly to the native indicator to keep 100% native picker functionality with a single, clean calendar icon.
+
+### Case 4: Rejection of Competing Boolean Status Flags (Phase 3)
+- **Initial AI Output:** Early drafts included both a `status: 'completed'` string and a `completed: true` boolean property.
+- **Human/Agent Audit:** Identified as an architectural liability that could cause state drift.
+- **Correction Applied:** Enforced a single canonical `status` field (`'todo' | 'in_progress' | 'completed'`) as the sole source of truth across state, badges, filters, and metrics.
 
 ---
 
-## Phase 4.1 — Form Modal & Delete Dialog Visual Audit & Refinement
-- **Tool / Assistant:** Gemini 3.8 Flash (High) via Google Antigravity
-- **Date:** November 23, 2026
-- **Scope:**
-  - Audited actual Figma modal bounds in Frame `1:279` (outer frame 760 × 822 px), identifying exact modal card dimensions (597 × 714 px) and adjusted `.modal-container` to `max-width: 600px`.
-  - Investigated and resolved the duplicate calendar icons issue on the Due Date input: pruned the redundant custom Lucide icon and wrapper while preserving the native, interactive browser date-picker indicator (`::-webkit-calendar-picker-indicator`).
-  - Audited delete confirmation dialog: verified `role="alertdialog"`, `aria-modal="true"`, initial focus on "Cancel" button to safeguard against accidental deletion, full focus restoration upon closing, and title wrapping (`word-break: break-word`).
-  - Executed automated visual and functional regression suite verifying modal cancel, validation, creation, editing, deletion cancellation, deletion confirmation, statistics updates, and refresh persistence.
-  - Re-captured high-resolution screenshots:
-    - `rendered_modal_desktop_1440x1000.png`
-    - `rendered_modal_mobile_390x1128.png`
-    - `rendered_delete_dialog_desktop.png`
-    - `rendered_delete_dialog_mobile.png`
+## 5. Phase-by-Phase Development Chronology
+
+- **Phase 1 (Nov 22, 2026):** Figma design analysis across all 6 target frames; repository setup with Vite + React 18; establishment of design token variables; architectural plan authoring.
+- **Phase 2 (Nov 22, 2026):** Desktop dashboard implementation (1440 × 1000 px); 3-slide Focus Notes carousel; dynamic statistics grid; full task table with priority badges.
+- **Phase 3 (Nov 22, 2026):** Mobile-first responsive implementation (390 × 1128 px mobile, 768 × 1024 px tablet); canonical task status model refactor; fixed mobile bottom navigation.
+- **Phase 3.1 (Nov 23, 2026):** Pixel-perfect brand logo recreation; Ponytail code audit; dead CSS elimination; removal of artificial logo shadow.
+- **Phase 4 (Nov 23, 2026):** Complete task CRUD operations; reusable `TaskModal` matching Figma Frame `1:279`; accessible `ConfirmDeleteDialog`; `localStorage` synchronization under `focusboard_tasks`.
+- **Phase 4.1 (Nov 23, 2026):** Visual audit of modal card bounds (597 × 714 px); calendar icon duplication resolution; delete dialog focus restoration.
+- **Phase 5 (Nov 23, 2026):** Final engineering audit; Playwright end-to-end test suite implementation (8/8 passing); final 1440px and 390px submission screenshot generation; compliance matrix verification.

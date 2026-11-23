@@ -24,6 +24,27 @@ export default function ConfirmDeleteDialog({
       const handleKeyDown = (e) => {
         if (e.key === 'Escape') {
           onClose();
+          return;
+        }
+        if (e.key === 'Tab' && dialogRef.current) {
+          const focusable = dialogRef.current.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+          );
+          if (focusable.length === 0) return;
+          const firstEl = focusable[0];
+          const lastEl = focusable[focusable.length - 1];
+
+          if (e.shiftKey) {
+            if (document.activeElement === firstEl) {
+              e.preventDefault();
+              lastEl.focus();
+            }
+          } else {
+            if (document.activeElement === lastEl) {
+              e.preventDefault();
+              firstEl.focus();
+            }
+          }
         }
       };
       window.addEventListener('keydown', handleKeyDown);

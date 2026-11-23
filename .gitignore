@@ -35,6 +35,10 @@ Thumbs.db
 *.sw?
 
 
+# Testing & Reports
+playwright-report/
+test-results/
+
 docs/
 .agents/
 .codex/
