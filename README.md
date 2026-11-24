@@ -1,3 +1,5 @@
+Here is the deployed link : https://focusboard-mobilefirst.vercel.app/
+
 # FocusBoard — Portfolio Task Management Dashboard
 
 FocusBoard is a professional, high-performance task management dashboard built for a frontend developer trainee assessment. It translates official Figma design references into an accessible, pixel-accurate single-page application with complete task CRUD operations, compound search/filtering, and seamless browser `localStorage` persistence.
@@ -285,4 +287,5 @@ npm test
 - **Local Project Directory:** `focusboard-mobilefirst`
 - **Git Branch:** `main`
 - **GitHub Repository URL:** `https://github.com/eshwarrao123/focusboard-mobilefirst.git`
+- "Deployed Link:" `https://focusboard-mobilefirst.vercel.app/`
 - **Deployment Strategy:** Production build output (`dist/`) is pre-compiled and fully static, ready for deployment to Vercel, Netlify, or GitHub Pages.
